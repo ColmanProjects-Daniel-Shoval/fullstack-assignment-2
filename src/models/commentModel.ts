@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 
 export interface IComment extends Document {
     postId: string;
-    senderId: string;
+    sender: string;
     content: string;
 }
 
@@ -11,7 +11,7 @@ const commentSchema = new Schema<IComment>({
         type: String,
         required: true,
     },
-    senderId: {
+    sender: {
         type: String,
         required: true,
     },

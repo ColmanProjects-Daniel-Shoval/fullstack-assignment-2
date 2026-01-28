@@ -6,5 +6,6 @@ const postRouter = Router();
 postRouter.get("/", postController.get.bind(postController));
 postRouter.get("/:id", postController.getById.bind(postController));
 postRouter.post("/", postController.create.bind(postController));
+postRouter.put("/:id", postController.put.bind(postController));
 
 export default postRouter;

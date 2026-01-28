@@ -74,4 +74,97 @@ const register = async (req: Request, res: Response) => {
   }
 };
 
-export default { register };
+const login = async (req: Request, res: Response) => {
+    const email = req.body.email;
+    const password = req.body.password;
+    if (!email || !password) {
+        return sendError(400, "Email and password are required", res);
+    }
+    try {
+        const user = await User.findOne({ email: email });
+        if (!user) {
+            return sendError(400, "Invalid email", res);
+        }
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return sendError(400, "Invalid password", res);
+        }
+
+        const tokens = generateToken(user._id.toString());
+        if (!user.refreshTokens) {
+            user.refreshTokens = [];
+        }
+        user.refreshTokens.push(tokens.refreshToken);
+        await user.save();
+        res.status(200).json(tokens);
+    } catch {
+        return sendError(500, "Internal server error", res);
+    }
+};
+
+const refreshToken = async (req: Request, res: Response) => {
+    const refreshToken = req.body.refreshToken;
+    if (!refreshToken) {
+        return sendError(400, "Refresh token is required", res);
+    }
+
+    try {
+        const secret = getJWTSecret();
+        const decoded = jwt.verify(refreshToken, secret) as { _id: string };
+        const user = await User.findById(decoded._id);
+        if (!user) {
+            return sendError(401, "Invalid refresh token", res);
+        }
+        if (!user.refreshTokens || !user.refreshTokens.includes(refreshToken)) {
+            user.refreshTokens = [];
+            await user.save();
+            return sendError(401, "Invalid refresh token", res);
+        }
+        const tokens = generateToken(user._id.toString());
+        user.refreshTokens = user.refreshTokens.filter(token => token !== refreshToken);
+        user.refreshTokens.push(tokens.refreshToken);
+        await user.save();
+        res.status(200).json(tokens);
+    } catch (err) {
+        if (err instanceof Error && err.message === "JWT_SECRET is not defined") {
+            return sendError(500, err.message, res);
+        }
+        return sendError(401, "Invalid refresh token", res);
+    }
+};
+
+const logout = async (req: Request, res: Response) => {
+    const refreshToken = req.body.refreshToken;
+    if (!refreshToken) {
+        return sendError(400, "Refresh token is required", res);
+    }
+
+    try {
+        const secret = getJWTSecret();
+        const decoded = jwt.verify(refreshToken, secret) as { _id: string };
+        const user = await User.findById(decoded._id);
+        if (!user) {
+            return sendError(401, "Invalid refresh token", res);
+        }
+        if (!user.refreshTokens || !user.refreshTokens.includes(refreshToken)) {
+            user.refreshTokens = [];
+            await user.save();
+            return sendError(401, "Invalid refresh token", res);
+        }
+        user.refreshTokens = user.refreshTokens.filter(token => token !== refreshToken);
+        await user.save();
+        res.status(200).send();
+    } catch (err) {
+        if (err instanceof Error && err.message === "JWT_SECRET is not defined") {
+            return sendError(500, err.message, res);
+        }
+        return sendError(401, "Invalid refresh token", res);
+    }
+};
+
+export default {
+    register,
+    login,
+    refreshToken,
+    logout
+};

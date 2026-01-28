@@ -4,6 +4,9 @@ import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import { config } from "config/config";
 import commentsRouter from "./routes/commentRoutes";
+import postRouter from "routes/postRoute";
+import cors from "cors";
+
 
 dotenv.config();
 
@@ -12,7 +15,10 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors())
+
 app.use('/comment', commentsRouter);
+app.use('/posts', postRouter);
 
 const db = mongoose.connection;
 db.on("error", (error) => console.error(error));

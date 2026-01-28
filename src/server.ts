@@ -3,7 +3,8 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import { config } from "config/config";
-import commentsRouter from "./routes/commentRoutes";
+import commentsRouter from "./routes/commentRoute";
+import userRouter from "./routes/userRoute";
 import postRouter from "routes/postRoute";
 import authRouter from "routes/authRoute";
 import cors from "cors";
@@ -22,6 +23,7 @@ app.use(cors())
 app.use('/auth', authRouter);
 app.use(authenticate);
 app.use('/comment', commentsRouter);
+app.use('/user', userRouter);
 app.use('/posts', postRouter);
 
 const db = mongoose.connection;

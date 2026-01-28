@@ -5,6 +5,7 @@ import bodyParser from "body-parser";
 import { config } from "config/config";
 import commentsRouter from "./routes/commentRoutes";
 import postRouter from "routes/postRoute";
+import authRouter from "routes/authRoute";
 import cors from "cors";
 
 
@@ -17,6 +18,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors())
 
+app.use('/auth', authRouter);
 app.use('/comment', commentsRouter);
 app.use('/posts', postRouter);
 

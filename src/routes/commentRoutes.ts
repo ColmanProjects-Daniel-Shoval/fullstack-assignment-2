@@ -4,5 +4,6 @@ import commentController from "../controllers/commentController";
 const router = express.Router();
 
 router.post("/", commentController.create.bind(commentController));
+router.get("/:id", commentController.getById.bind(commentController));
 
 export default router;

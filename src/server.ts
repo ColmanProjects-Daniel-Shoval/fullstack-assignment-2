@@ -7,6 +7,7 @@ import commentsRouter from "./routes/commentRoutes";
 import postRouter from "routes/postRoute";
 import authRouter from "routes/authRoute";
 import cors from "cors";
+import { authenticate } from "middlewares/authMiddleware";
 
 
 dotenv.config();
@@ -19,6 +20,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors())
 
 app.use('/auth', authRouter);
+app.use(authenticate);
 app.use('/comment', commentsRouter);
 app.use('/posts', postRouter);
 

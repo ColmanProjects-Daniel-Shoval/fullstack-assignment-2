@@ -40,7 +40,7 @@ describe("Comment Tests", () => {
                 sender: "Test Sender",
             });
         expect(response.statusCode).toBe(201);
-        postId = response.body._id;
+        postId = response.body._id;        
     });
 
 

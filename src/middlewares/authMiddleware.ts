@@ -1,10 +1,11 @@
 import { config } from "../config/config";
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
+import UserModel from "../models/userModel";
 
 export type AuthRequest = Request & { user?: { _id: string } };
 
-export const authenticate = (req: AuthRequest, res: Response, next: NextFunction) => {
+export const authenticate = async (req: AuthRequest, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
         return res.status(401).json({ message: "Unauthorized" });
@@ -19,6 +20,12 @@ export const authenticate = (req: AuthRequest, res: Response, next: NextFunction
     }
     try {
         const decoded = jwt.verify(token, secret) as { _id: string };
+
+        const user = await UserModel.findById(decoded._id);
+        if (!user) {
+            return res.status(401).json({ error: "Unauthorized: User not found" });
+        }
+
         req.user = { _id: decoded._id };
         next();
     } catch (err) {

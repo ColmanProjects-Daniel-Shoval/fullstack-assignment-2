@@ -40,9 +40,7 @@ describe("Comment Tests", () => {
                 sender: "Test Sender",
             });
         expect(response.statusCode).toBe(201);
-        console.log(loginUser1.token);
         postId = response.body._id;
-        console.log(postId);
         
     });
 

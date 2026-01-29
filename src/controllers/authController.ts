@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import User from "../models/userModel";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { config } from "config/config";
+import { config } from "../config/config";
 
 const sendError = (status: number, message: string, res: Response) => {
   res.status(status).json({ error: message });

@@ -1,8 +1,8 @@
 import { Response } from "express";
 import baseController from "./baseController";
-import PostModel from "models/postModel";
-import CommentModel from "models/commentModel";
-import { AuthRequest } from "middlewares/authMiddleware";
+import PostModel from "../models/postModel";
+import CommentModel from "../models/commentModel";
+import { AuthRequest } from "../middlewares/authMiddleware";
 
 class CommentController extends baseController {
     constructor() {

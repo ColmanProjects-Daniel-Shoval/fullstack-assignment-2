@@ -2,15 +2,14 @@ import express, { Express } from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
-import { config } from "config/config";
+import { config } from "./config/config";
 import commentsRouter from "./routes/commentRoute";
 import userRouter from "./routes/userRoute";
-import postRouter from "routes/postRoute";
-import authRouter from "routes/authRoute";
+import postRouter from "./routes/postRoute";
+import authRouter from "./routes/authRoute";
 import cors from "cors";
+import { authenticate } from "./middlewares/authMiddleware";
 import { swaggerUi, swaggerSpec } from "./swagger";
-import { authenticate } from "middlewares/authMiddleware";
-
 
 dotenv.config();
 
@@ -28,8 +27,8 @@ app.use(cors())
 
 app.use('/auth', authRouter);
 app.use(authenticate);
-app.use('/comment', commentsRouter);
-app.use('/user', userRouter);
+app.use('/comments', commentsRouter);
+app.use('/users', userRouter);
 app.use('/posts', postRouter);
 
 const db = mongoose.connection;

@@ -1,6 +1,6 @@
-import PostModel from "models/postModel";
+import PostModel from "../models/postModel";
 import baseController from "./baseController";
-import { AuthRequest } from "middlewares/authMiddleware";
+import { AuthRequest } from "../middlewares/authMiddleware";
 import { Response } from "express";
 
 class PostController extends baseController {

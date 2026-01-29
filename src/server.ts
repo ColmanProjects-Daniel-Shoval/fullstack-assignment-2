@@ -8,6 +8,7 @@ import userRouter from "./routes/userRoute";
 import postRouter from "routes/postRoute";
 import authRouter from "routes/authRoute";
 import cors from "cors";
+import { swaggerUi, swaggerSpec } from "./swagger";
 import { authenticate } from "middlewares/authMiddleware";
 
 
@@ -15,6 +16,11 @@ dotenv.config();
 
 const app = express();
 
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  explorer: true,
+  customCss: '.swagger-ui .topbar { display: none }',
+  customSiteTitle: 'Shoval & Daniel Posts & Comments API Documentation'
+}));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

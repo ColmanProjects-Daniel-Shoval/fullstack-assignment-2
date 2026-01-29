@@ -1,6 +1,13 @@
-# Fullstack Assignment 1
+# Fullstack Assignment 2
 
-This is a REST API for a simple blog application for Fullstck assignment for colman, built with Node.js, Express, and MongoDB.
+This is a REST API for a simple blog application for Fullstack assignment for colman, built with Node.js, Express, and MongoDB.
+
+## Features
+
+- **Authentication**: User registration, login, logout, and refresh token mechanisms using JWT.
+- **Posts & Comments**: Create, read, update, and delete posts and comments.
+- **Swagger Documentation**: Interactive API documentation.
+- **Testing**: Comprehensive tests using Jest and Supertest.
 
 ## Getting Started
 
@@ -12,12 +19,23 @@ This is a REST API for a simple blog application for Fullstck assignment for col
 2.  **Environment Setup**:
     - Create a `.env` file in the root directory (copy from `.env.example`).
     - Set `PORT` (default 3000) and `DATABASE_URL`.
+    - Set `JWT_SECRET` and `JWT_REFRESH_SECRET` for authentication.
 
 3.  **Run the server**:
     - Development: `npm run dev`
     - Production: `npm start`
 
-## API Endpoints
+## API Documentation
+
+- **Swagger UI**: Visit `http://localhost:<PORT>/api-docs` to view and interact with the API documentation.
+
+## API Endpoints Overview
+
+### Authentication
+- `POST /auth/register`: Register a new user.
+- `POST /auth/login`: Login user.
+- `POST /auth/refresh`: Refresh access token.
+- `POST /auth/logout`: Logout user.
 
 ### Posts
 - `GET /posts`: Get all posts.
@@ -26,10 +44,24 @@ This is a REST API for a simple blog application for Fullstck assignment for col
 - `PUT /posts/:id`: Update a post by ID.
 
 ### Comments
-- `GET /comment/:id`: Get a comment by ID.
-- `POST /comment`: Create a new comment.
-- `PUT /comment/:id`: Update a comment by ID.
-- `DELETE /comment/:id`: Delete a comment by ID.
+- `GET /comments`: Get all comments.
+- `GET /comments/:id`: Get a comment by ID.
+- `POST /comments`: Create a new comment.
+- `PUT /comments/:id`: Update a comment by ID.
+- `DELETE /comments/:id`: Delete a comment by ID.
+
+### Users
+- `GET /users`: Get user details.
+- `GET /users/:id`: Get user by ID.
+- `PUT /users/:id`: Update user details.
 
 ## Testing
-Use the `request.rest` file with the VS Code REST Client extension to test the endpoints.
+
+### Automated Tests
+Run the Jest test suite:
+```bash
+npm run test
+```
+
+### Manual Testing
+Use the `request.rest` file with the VS Code REST Client extension to test the endpoints manually.
